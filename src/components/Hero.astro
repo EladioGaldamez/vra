@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import cover from "../assets/img/valentina-cover.png";
+---
+
+<header class="px-3 pt-4 lg:px-8 mb-6 lg:mb-12 mx-auto overflow-hidden">
+  <h1
+    class="hero--title font-nunito font-bold text-white text-center leading-none text-nowrap uppercase mb-2"
+    style="width: 100%;"
+  >
+    Tina Rosero
+  </h1>
+  <Image
+    class="rounded-xl lg:rounded-3xl object-cover object-center"
+    src={cover}
+    alt="Valentina Rosero"
+  />
+</header>
+
+<script>
+  let titleRef = document.querySelector<HTMLHeadingElement>("h1.hero--title");
+
+  function resizeTitle() {
+    if (!titleRef || !titleRef.parentElement) return;
+    const parentWidth = titleRef.parentElement.offsetWidth;
+    const minFont = 40;
+    const maxFont = 800;
+    const divisor = 7.5;
+    let fontSize = parentWidth / divisor;
+    fontSize = Math.max(minFont, Math.min(maxFont, fontSize));
+    titleRef.style.fontSize = fontSize + "px";
+  }
+
+  window.addEventListener("resize", resizeTitle);
+  resizeTitle();
+</script>

@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+
+// Dynamically import gallery images
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/img/gallery/photoshoot-*.{jpeg,jpg,png,gif}"
+);
+
+const photoshoots = [
+  "photoshoot-01",
+  "photoshoot-02",
+  "photoshoot-03",
+  // "photoshoot-04",
+];
+
+const photoshootsGallery = photoshoots.reduce((acc, prefix) => {
+  const items: any[] = [];
+  const ids = Object.keys(images).filter((img) =>
+    img.startsWith(`/src/assets/img/gallery/${prefix}`)
+  );
+
+  ids.slice(0, 3).forEach((id) => {
+    items.push(images[id]);
+  });
+
+  acc[prefix] = items;
+  return acc;
+}, {} as Record<string, any[]>);
+---
+
+<section
+  class="px-3 lg:px-8 mb-6 lg:mb-12 mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 scroll-mt-6"
+  id="work"
+>
+  {
+    photoshoots.map((photoshoot, colIndex) => (
+      <>
+        {photoshootsGallery[photoshoot].map((img, imgIndex) => (
+          <div>
+            <Image
+              class="h-auto max-w-full rounded-lg aspect-[9/16] object-center object-cover"
+              src={img()}
+              alt={`Photoshoot ${colIndex + 1} - Image ${imgIndex + 1}`}
+            />
+          </div>
+        ))}
+      </>
+    ))
+  }
+</section>

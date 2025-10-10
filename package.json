@@ -1,5 +1,5 @@
 {
-  "name": "vra",
+  "name": "marketing-astro",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,6 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.4.2"
+    "@astrojs/netlify": "^6.5.12",
+    "@fontsource-variable/nunito-sans": "^5.2.5",
+    "@tailwindcss/vite": "^4.1.7",
+    "astro": "^5.14.3",
+    "tailwind-merge": "^3.3.0"
   }
 }

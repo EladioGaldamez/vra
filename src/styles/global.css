@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --spacing: 8px;
+  --font-nunito: "Nunito Sans Variable", sans-serif;
+
+  --color-background: #111111;
+}
