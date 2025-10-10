@@ -4,6 +4,8 @@ import "@fontsource-variable/nunito-sans";
 import Header from "@/components/Header.astro";
 
 import "@/styles/global.css";
+
+const { title, description, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,19 +14,15 @@ import "@/styles/global.css";
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.png?" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valentina Rosero</title>
-    <meta
-      name="description"
-      content="Modelo profesional colombiana y estudiante de Comunicación. Elegancia, autenticidad y estilo en cada proyecto de moda y expresión visual."
-    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? "noindex" : "index"} />
 
-    <meta property="og:title" content="Valentina Rosero" />
+    <meta property="og:site_name" content={title} />
+    <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.tinarosero.com/" />
-    <meta
-      property="og:description"
-      content="Modelo profesional colombiana y estudiante de Comunicación. Elegancia, autenticidad y estilo en cada proyecto de moda y expresión visual."
-    />
+    <meta property="og:description" content={description} />
     <meta property="og:image" content="https://www.tinarosero.com/tina.png" />
   </head>
   <body class="bg-background text-white scroll-smooth">

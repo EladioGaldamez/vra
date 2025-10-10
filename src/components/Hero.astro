@@ -11,9 +11,13 @@ import cover from "../assets/img/valentina-cover.png";
     Tina Rosero
   </h1>
   <Image
-    class="rounded-xl lg:rounded-3xl object-cover object-center"
+    class="rounded-xl lg:rounded-3xl object-cover object-center w-full"
     src={cover}
     alt="Valentina Rosero"
+    loading="lazy"
+    width={1200}
+    widths={[320, 540, 720, cover.width]}
+    sizes={`(max-width: 360px) 320px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${cover.width}px`}
   />
 </header>
 

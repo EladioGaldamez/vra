@@ -45,8 +45,8 @@ const photoshootsGallery = photoshoots.reduce(
               src={img()}
               alt={`Photoshoot ${colIndex + 1} - Image ${imgIndex + 1}`}
               loading="lazy"
-              widths={[240, 540, 720, img.width]}
-              sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${img.width}px`}
+              widths={[150, 540, 720]}
+              sizes={`(max-width: 360px) 150, (max-width: 720px) 540px, (max-width: 1600px) 720px`}
             />
           </div>
         ))}
