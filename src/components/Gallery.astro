@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 
 // Dynamically import gallery images
-const images = import.meta.glob<{ default: ImageMetadata }>(
+const images = import.meta.glob(
   "/src/assets/img/gallery/photoshoot-*.{jpeg,jpg,png,gif}"
 );
 

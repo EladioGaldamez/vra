@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import tina from "../assets/img/valentina-contact.png";
+---
+
+<section
+  class="px-3 pt-4 lg:px-8 mb-6 lg:mb-12 mx-auto grid grid-cols-2 gap-8"
+  id="contact"
+>
+  <Image class="h-auto max-w-full rounded-lg" src={tina} alt="Contact us" />
+
+  <div class="h-full">
+    <form
+      class="sticky top-4 p-4 flex flex-col gap-4"
+      data-netlify="true"
+      id="contact-form"
+    >
+      <h2 class="text-4xl font-nunito mb-4">Get in Touch</h2>
+      <div class="grid gap-2">
+        <label for="name">Name</label>
+        <input
+          class="p-2 border border-gray-300 rounded-md"
+          type="text"
+          id="name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="grid gap-2">
+        <label for="email">Email</label>
+        <input
+          class="p-2 border border-gray-300 rounded-md"
+          type="email"
+          id="email"
+          name="email"
+          required
+        />
+      </div>
+      <div class="grid gap-2">
+        <label for="message">Message</label>
+        <textarea
+          class="p-2 border border-gray-300 rounded-md"
+          id="message"
+          name="message"
+          rows="5"
+          required></textarea>
+      </div>
+      <button
+        type="submit"
+        class="p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800 font-bold cursor-pointer"
+      >
+        Send Message
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const handleSubmit = (event) => {
+      event.preventDefault();
+
+      const myForm = event.target;
+      const formData = new FormData(myForm);
+
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString(),
+      })
+        .then(() => alert("Thank you for your submission"))
+        .catch((error) => alert(error));
+    };
+
+    const $form = document.querySelector("#contact-form");
+
+    if ($form) {
+      $form.addEventListener("submit", handleSubmit);
+    }
+  });
+</script>

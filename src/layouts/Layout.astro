@@ -6,16 +6,22 @@ import Header from "@/components/Header.astro";
 import "@/styles/global.css";
 ---
 
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Valentina Rosero Arcila</title>
   </head>
-  <body class="bg-background text-white">
+  <body class="bg-background text-white scroll-smooth">
     <Header />
 
     <slot />
+
+    <footer>
+      <p class="text-center text-gray-400 text-xs mb-4">
+        &copy; 2025 Valentina Rosero Arcila. All rights reserved.
+      </p>
+    </footer>
   </body>
 </html>
