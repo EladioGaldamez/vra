@@ -16,12 +16,19 @@ import tina from "../assets/img/valentina-contact.png";
   <div class="h-full">
     <form
       class="sticky top-4 p-4 flex flex-col gap-4"
-      netlify
       id="contact-form"
-      name="contact"
-      action="/success"
+      name="contact-form"
+      action="/"
       method="POST"
+      netlify-honeypot="bot-field"
+      data-netlify="true"
     >
+      <input type="hidden" name="form-name" value="contact-form" />
+      <input
+        aria-label="Don't fill this out if you're human"
+        name="bot-field"
+        type="hidden"
+      />
       <h2 class="text-4xl font-nunito mb-4">Contáctame</h2>
       <div class="grid gap-2">
         <label for="name">Nombre</label>
