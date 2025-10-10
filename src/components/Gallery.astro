@@ -41,9 +41,12 @@ const photoshootsGallery = photoshoots.reduce(
         {photoshootsGallery[photoshoot].map((img, imgIndex) => (
           <div>
             <Image
-              class="h-auto max-w-full rounded-lg aspect-[9/16] object-center object-cover"
+              class="h-auto max-w-full rounded-lg aspect-[2/3] object-center object-cover"
               src={img()}
               alt={`Photoshoot ${colIndex + 1} - Image ${imgIndex + 1}`}
+              loading="lazy"
+              widths={[240, 540, 720, img.width]}
+              sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${img.width}px`}
             />
           </div>
         ))}
