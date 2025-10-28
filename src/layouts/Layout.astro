@@ -26,23 +26,68 @@ const { title, description, noindex = false } = Astro.props;
     <meta property="og:image" content="https://www.tinarosero.com/tina.png" />
     <meta property="og:image:alt" content="Valentina Rosero" />
     <meta property="og:locale" content="es_ES" />
-    
+
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://www.tinarosero.com/tina.png" />
-    
+
     <!-- Additional SEO tags -->
     <meta name="author" content="Valentina Rosero" />
-    <meta name="keywords" content="modelo internacional, international model, fotografía, photoshoot, portafolio, Valentina Rosero, moda, fashion, model, modeling agency, agencia de modelos, Medellin, Bogotá, Colombia, Guatemala, Latin American model, modelo latinoamericana, fashion photography, editorial, commercial modeling, runway, pasarela, casting, portfolio" />
+    <meta
+      name="keywords"
+      content="modelo internacional, international model, fotografía, photoshoot, portafolio, Valentina Rosero, moda, fashion, model, modeling agency, agencia de modelos, Medellin, Bogotá, Colombia, Guatemala, Latin American model, modelo latinoamericana, fashion photography, editorial, commercial modeling, runway, pasarela, casting, portfolio"
+    />
     <meta name="theme-color" content="#111111" />
     <link rel="canonical" href="https://www.tinarosero.com/" />
-    
+
     <!-- Preconnect to important third-party domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+
+    <!-- Schema.org structured data for a professional model -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Valentina Rosero",
+        "url": "https://www.tinarosero.com/",
+        "image": "https://www.tinarosero.com/tina.png",
+        "jobTitle": "Modelo Profesional",
+        "description": "Modelo profesional con base en Colombia y experiencia internacional en moda, editorial y modelaje comercial",
+        "nationality": {
+          "@type": "Country",
+          "name": "Colombia"
+        },
+        "workLocation": [
+          {
+            "@type": "City",
+            "name": "Medellín, Colombia"
+          },
+          {
+            "@type": "City",
+            "name": "Bogotá, Colombia"
+          },
+          {
+            "@type": "City",
+            "name": "Ciudad de Guatemala, Guatemala"
+          }
+        ],
+        "knowsLanguage": ["Español"],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Modelo",
+          "occupationCategory": "Modelo de Moda",
+          "skills": ["Pasarela", "Editorial", "Comercial", "Moda", "Fotografía"]
+        },
+        "sameAs": [
+          "https://www.instagram.com/valentinaroseroa",
+          "https://www.tiktok.com/@valenrosero",
+          "https://x.com/valenrosero1",
+        ]
+      }
+    </script>
   </head>
   <body class="bg-background text-white scroll-smooth">
     <Header />
