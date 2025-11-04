@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/netlify": "6.6.0",
+    "@astrojs/sitemap": "^3.6.0",
     "@fontsource-variable/nunito-sans": "^5.2.5",
     "@tailwindcss/vite": "^4.1.7",
     "astro": "5.15.2",
