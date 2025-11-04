@@ -16,6 +16,12 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/success"),
+      namespaces: {
+        news: false,
+        xhtml: false,
+        video: false,
+        image: false,
+      }
     }),
   ],
 });
