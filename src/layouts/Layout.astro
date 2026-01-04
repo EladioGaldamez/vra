@@ -88,6 +88,19 @@ const { title, description, noindex = false } = Astro.props;
         ]
       }
     </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7JJ83X6G35"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7JJ83X6G35");
+    </script>
   </head>
   <body class="bg-background text-white scroll-smooth">
     <Header />
