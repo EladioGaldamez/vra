@@ -2781,7 +2781,7 @@
     uuid "^13.0.0"
     xstate "^5.24.0"
 
-"@sanity/dashboard@^4.1.4 || ^5":
+"@sanity/dashboard@^4.1.4 || ^5", "@sanity/dashboard@^5.0.1":
   version "5.0.1"
   resolved "https://registry.npmjs.org/@sanity/dashboard/-/dashboard-5.0.1.tgz"
   integrity sha512-C3E1GrV/Fbkp180kN+9/mZRLVKMz8gro02+u7zMQbDrjURbdhrOush9XuU2a8BLTqkt084KrV7rt7roUaxk/WQ==
