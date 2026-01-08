@@ -1,16 +1,19 @@
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import {
+  Swiper,
+  SwiperSlide,
+  type SwiperClass as SwiperType,
+} from "swiper/react";
+import SwiperCore from "swiper";
+import { Mousewheel, Navigation, FreeMode } from "swiper/modules";
+import type { Photoshoot } from "./types";
 
-type Photoshoot = {
-  _id: string;
-  title: string;
-  description?: string;
-  images: {
-    _key: string;
-    alt: string;
-    url: string;
-  }[];
-};
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+import "swiper/css/mousewheel";
 
 interface PhotoshootModalProps {
   photoshoot: Photoshoot | null;
@@ -18,20 +21,25 @@ interface PhotoshootModalProps {
   onClose: () => void;
 }
 
+SwiperCore.use([Mousewheel, Navigation, FreeMode]);
+
 export const PhotoshootModal = ({
   photoshoot,
   isOpen,
   onClose,
 }: PhotoshootModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperType | null>(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [isNavLoaded, setNavLoaded] = useState(false);
+
+  // Refs
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      setCurrentIndex(0);
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -41,26 +49,18 @@ export const PhotoshootModal = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen || !photoshoot) return;
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === "ArrowRight") handleNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, photoshoot, currentIndex]);
+  }, [isOpen, photoshoot]);
+
+  useEffect(() => {
+    if (prevRef.current && nextRef.current) {
+      setNavLoaded(true);
+    }
+  }, [prevRef, nextRef]);
 
   if (!photoshoot) return null;
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? photoshoot.images.length - 1 : prev - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === photoshoot.images.length - 1 ? 0 : prev + 1
-    );
-  };
 
   return (
     <AnimatePresence>
@@ -97,7 +97,7 @@ export const PhotoshootModal = ({
               className="absolute top-6 left-6 md:left-20"
             >
               <h3 className="heading-display text-2xl md:text-3xl text-foreground">
-                {photoshoot.title}
+                {photoshoot.title} - {isNavLoaded ? "true" : "false"}
               </h3>
               {photoshoot.description && (
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -107,26 +107,41 @@ export const PhotoshootModal = ({
             </motion.div>
 
             {/* Main Image */}
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="relative max-h-[70vh] max-w-full"
-            >
-              <img
-                src={`${photoshoot.images[currentIndex].url}?w=1200&fit=crop&auto=format&q=80`}
-                alt={`${photoshoot.title} - Image ${currentIndex + 1}`}
-                className="max-h-[70vh] max-w-full object-contain rounded-sm shadow-2xl"
-              />
-            </motion.div>
+            <div className="w-full lg:w-1/3 h-[70vh] mx-auto">
+              {isNavLoaded && (
+                <Swiper
+                  onSwiper={setSwiper}
+                  loop={true}
+                  slidesPerView={1}
+                  navigation={{
+                    prevEl: prevRef.current,
+                    nextEl: nextRef.current,
+                  }}
+                  onRealIndexChange={(swiper) =>
+                    setCurrentIndex(swiper.realIndex)
+                  }
+                  thumbs={{ swiper: thumbsSwiper ?? undefined }}
+                  className="h-[70vh]"
+                >
+                  {photoshoot.images.map((image, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        src={`${image.url}?w=1200&fit=crop&auto=format&q=80`}
+                        alt={image.alt || ""}
+                        className="w-full h-full object-contain rounded-sm shadow-2xl"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+            </div>
 
             {/* Navigation */}
-            <div className="absolute left-4 md:left-10 top-1/2 -translate-y-1/2">
+            <div className="absolute left-4 md:left-10 top-1/2 z-20 -translate-y-1/2">
               <button
-                onClick={handlePrev}
                 className="p-3 text-foreground/40 hover:text-foreground transition-colors"
                 aria-label="Previous image"
+                ref={prevRef}
               >
                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                   <use href="/icons-sprite.svg#chevron-left"></use>
@@ -134,11 +149,11 @@ export const PhotoshootModal = ({
               </button>
             </div>
 
-            <div className="absolute right-4 md:right-10 top-1/2 -translate-y-1/2">
+            <div className="absolute right-4 md:right-10 top-1/2 z-20 -translate-y-1/2">
               <button
-                onClick={handleNext}
                 className="p-3 text-foreground/40 hover:text-foreground transition-colors"
                 aria-label="Next image"
+                ref={nextRef}
               >
                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                   <use href="/icons-sprite.svg#chevron-right"></use>
@@ -151,25 +166,51 @@ export const PhotoshootModal = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="absolute bottom-8 flex gap-3"
+              className="absolute bottom-8 flex gap-3 w-2/3 lg:w-1/3 mx-auto"
             >
-              {photoshoot.images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`relative w-16 h-20 md:w-20 md:h-24 overflow-hidden rounded-sm transition-all duration-300 ${
-                    index === currentIndex
-                      ? "ring-2 ring-accent opacity-100"
-                      : "opacity-40 hover:opacity-70"
-                  }`}
-                >
-                  <img
-                    src={`${image.url}?w=120&fit=crop&auto=format&q=80`}
-                    alt={image.alt}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
+              <Swiper
+                onSwiper={setThumbsSwiper}
+                loop={false}
+                slidesPerView={
+                  photoshoot.images.length > 3 ? 3 : photoshoot.images.length
+                }
+                spaceBetween={2}
+                breakpoints={{
+                  768: {
+                    slidesPerView:
+                      photoshoot.images.length > 4
+                        ? 4
+                        : photoshoot.images.length,
+                    spaceBetween: 5,
+                  },
+                  1024: {
+                    slidesPerView:
+                      photoshoot.images.length > 6
+                        ? 6
+                        : photoshoot.images.length,
+                    spaceBetween: 10,
+                  },
+                }}
+              >
+                {photoshoot.images.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <button
+                      className={`relative w-16 h-20 md:w-20 md:h-24 overflow-hidden rounded-sm transition-all duration-300 ${
+                        index === currentIndex
+                          ? "ring-2 ring-accent opacity-100"
+                          : "opacity-40 hover:opacity-70"
+                      }`}
+                      onClick={() => swiper?.slideToLoop(index)}
+                    >
+                      <img
+                        src={`${image.url}?w=120&fit=crop&auto=format&q=80`}
+                        alt={image.alt}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </motion.div>
 
             {/* Counter */}
