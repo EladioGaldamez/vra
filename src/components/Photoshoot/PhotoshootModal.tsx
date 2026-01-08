@@ -94,7 +94,7 @@ export const PhotoshootModal = ({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
-              className="absolute top-6 left-6 md:left-20"
+              className="w-full p-6"
             >
               <h3 className="heading-display text-2xl md:text-3xl text-foreground">
                 {photoshoot.title} - {isNavLoaded ? "true" : "false"}
@@ -107,7 +107,7 @@ export const PhotoshootModal = ({
             </motion.div>
 
             {/* Main Image */}
-            <div className="w-full lg:w-1/3 h-[70vh] mx-auto">
+            <div className="flex-1 w-full lg:w-1/3 h-[70vh] mx-auto">
               {isNavLoaded && (
                 <Swiper
                   onSwiper={setSwiper}
@@ -166,7 +166,7 @@ export const PhotoshootModal = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="absolute bottom-8 flex gap-3 w-2/3 lg:w-1/3 mx-auto"
+              className="flex gap-3 w-2/3 lg:w-1/3 mx-auto"
             >
               <Swiper
                 onSwiper={setThumbsSwiper}
