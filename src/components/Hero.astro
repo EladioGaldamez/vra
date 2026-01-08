@@ -1,40 +1,68 @@
 ---
-import { Image } from "astro:assets";
-import cover from "../assets/img/valentina-cover.png";
+import { getImageUrl } from "@/lib/sanity/utils";
+
+interface Props {
+  title: string;
+  description: string;
+  image: any; // TODO: Add image type
+  buttonText: string;
+  buttonLink: string;
+}
+
+const { title, description, image, buttonText, buttonLink } =
+  Astro.props as Props;
+
+const imageUrl = getImageUrl(image);
 ---
 
-<header class="px-3 pt-4 lg:px-8 mb-6 lg:mb-12 mx-auto overflow-hidden">
-  <h1
-    class="hero--title font-nunito font-bold text-white text-center leading-none text-nowrap uppercase mb-2"
-    style="width: 100%;"
+<section
+  class="relative min-h-screen flex items-center justify-center overflow-hidden"
+>
+  <div class="absolute inset-0">
+    <img
+      src={imageUrl}
+      alt="Background image of Valentina Rosero"
+      sizes={`(max-width: 1080px) 1080px, 1920px`}
+      class="mask-hero-image w-full h-full object-cover object-top"
+    />
+    <div class="absolute inset-0 bg-background/40"></div>
+  </div>
+
+  {/* Content */}
+  <div class="relative z-10 container mx-auto px-6 text-center">
+    <h1
+      class="heading-display text-[12vw] md:text-[10vw] lg:text-[8vw] leading-[0.9] text-foreground uppercase animate-fade-in-up"
+    >
+      {
+        title.split(" ").map((word, index, arr) => (
+          <Fragment key={index} class="inline-block">
+            {word} {index < arr.length - 1 ? <br /> : ""}
+          </Fragment>
+        ))
+      }
+    </h1>
+
+    <p
+      class="mt-8 text-sm md:text-base uppercase tracking-[0.3em] text-primary animate-fade-in-up-sm"
+    >
+      {description}
+    </p>
+
+    <div class="mt-16 animate-fade-in-delay-1">
+      <a
+        href={buttonLink}
+        class="inline-block px-8 py-3 border border-foreground text-sm uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background transition-all duration-500"
+      >
+        {buttonText}
+      </a>
+    </div>
+  </div>
+  <div
+    class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-fade-in-delay-1-2"
   >
-    Tina Rosero
-  </h1>
-  <Image
-    class="rounded-xl lg:rounded-3xl object-cover object-center w-full"
-    src={cover}
-    alt="Valentina Rosero"
-    loading="lazy"
-    width={1200}
-    widths={[320, 540, 720, cover.width]}
-    sizes={`(max-width: 360px) 320px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${cover.width}px`}
-  />
-</header>
-
-<script>
-  let titleRef = document.querySelector<HTMLHeadingElement>("h1.hero--title");
-
-  function resizeTitle() {
-    if (!titleRef || !titleRef.parentElement) return;
-    const parentWidth = titleRef.parentElement.offsetWidth;
-    const minFont = 40;
-    const maxFont = 800;
-    const divisor = 7.5;
-    let fontSize = parentWidth / divisor;
-    fontSize = Math.max(minFont, Math.min(maxFont, fontSize));
-    titleRef.style.fontSize = fontSize + "px";
-  }
-
-  window.addEventListener("resize", resizeTitle);
-  resizeTitle();
-</script>
+    <div
+      class="w-px h-16 bg-linear-to-b from-transparent via-foreground/50 to-transparent animate-bounce-vertical"
+    >
+    </div>
+  </div>
+</section>

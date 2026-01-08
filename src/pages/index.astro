@@ -1,18 +1,41 @@
 ---
+import { sanityClient } from "sanity:client";
+
 import Layout from "@/layouts/Layout.astro";
 
 import About from "@/components/About.astro";
-import Contact from "@/components/Contact.astro";
-import Gallery from "@/components/Gallery.astro";
+import Contact from "@/components/Contact";
 import Hero from "@/components/Hero.astro";
+import Photoshoot from "@/components/Photoshoot";
+
+import { HOME_QUERY } from "@/lib/sanity/queries";``
+
+const data = await sanityClient.fetch(HOME_QUERY);
 ---
 
 <Layout
   title="Valentina Rosero - Modelo Profesional"
   description="Modelo profesional colombiana y estudiante de Comunicación. Elegancia, autenticidad y estilo en cada proyecto de moda y expresión visual."
 >
-  <Hero />
-  <About />
-  <Gallery />
-  <Contact />
+  <Hero
+    title={data.heroTitle}
+    description={data.heroDescription}
+    image={data.heroImage}
+    buttonText={data.heroButtonText}
+    buttonLink={data.heroButtonLink}
+  />
+  <About
+    heading={data.aboutHeading}
+    title={data.aboutTitle}
+    description={data.aboutDescription}
+    details={data.aboutDetails}
+    image={data.aboutImage}
+  />
+  <Photoshoot
+    title={data.photoshootTitle}
+    heading={data.photoshootHeading}
+    photoshoots={data.photoshoots}
+    client:load
+  />
+  <Contact client:load />
 </Layout>
