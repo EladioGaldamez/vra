@@ -35,7 +35,7 @@ const data = await sanityClient.fetch(HOME_QUERY);
     title={data.photoshootTitle}
     heading={data.photoshootHeading}
     photoshoots={data.photoshoots}
-    client:load
+    client:idle
   />
-  <Contact client:load />
+  <Contact client:idle />
 </Layout>
