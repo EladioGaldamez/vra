@@ -43,6 +43,9 @@ const links = [
       <svg class="w-6 h-6 fill-current">
         <use href="/icons-sprite.svg#menu-icon"></use>
       </svg>
+      <svg class="w-6 h-6 fill-current">
+        <use href="/icons-sprite.svg#close-icon"></use>
+      </svg>
     </button>
   </nav>
 
@@ -80,16 +83,16 @@ const links = [
 
     function toggleMenu() {
       document.body.classList.toggle("menu-open");
-      const svg = document.getElementById("nav-toggle")?.querySelector("svg");
-      if (svg) {
-        svg.innerHTML = document.body.classList.contains("menu-open")
-          ? "<use href='/icons-sprite.svg#close-icon'></use>"
-          : "<use href='/icons-sprite.svg#menu-icon'></use>";
-      }
     }
 
     document.addEventListener("scroll", checkScrollPosition);
     checkScrollPosition();
+
+    document.querySelectorAll("header[data-main-header] a").forEach((link) => {
+      link.addEventListener("click", () => {
+        document.body.classList.remove("menu-open");
+      });
+    });
 
     document
       .getElementById("nav-toggle")

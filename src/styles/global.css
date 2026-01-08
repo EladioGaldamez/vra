@@ -171,6 +171,14 @@
   body.menu-open [data-mobile-menu] {
     @apply max-h-[500px] opacity-100;
   }
+
+  body:not(.menu-open) #nav-toggle svg:last-of-type {
+    display: none;
+  }
+
+  body.menu-open #nav-toggle svg:first-of-type {
+    display: none;
+  }
 }
 
 @utility mask-hero-image {
