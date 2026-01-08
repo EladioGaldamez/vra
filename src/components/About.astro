@@ -1,10 +1,11 @@
 ---
 import { getImageUrl } from "@/lib/sanity/utils";
+import { PortableText } from "astro-portabletext";
 
 interface Props {
   heading: string;
   title: string;
-  description: string;
+  description: any;
   details: string[];
   image: any;
 }
@@ -57,14 +58,11 @@ const imageUrl = getImageUrl(image);
         </h2>
 
         {
-          description &&
-            description
-              .split("\n")
-              .map((line, index) => (
-                <p class="mt-8 text-lg text-muted-foreground leading-relaxed text-elegant">
-                  {line}
-                </p>
-              ))
+          description && (
+            <div class="mt-8 text-lg text-muted-foreground leading-relaxed text-elegant *:mb-2">
+              <PortableText value={description as any} />
+            </div>
+          )
         }
 
         <div class="mt-12 flex flex-col lg:flex-row flex-wrap gap-8">

@@ -68,8 +68,15 @@ export const vraHomeType = defineType({
     defineField({
       name: "aboutDescription",
       title: "Descripción",
-      type: "text",
+      type: "array",
       group: "about",
+      of: [
+        defineArrayMember({
+          name: "description",
+          title: "Descripción",
+          type: "block",
+        }),
+      ],
     }),
     defineField({
       name: "aboutDetails",
