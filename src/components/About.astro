@@ -1,21 +1,85 @@
-<section
-  class="container px-3 mb-6 lg:mb-12 lg:px-8 mx-auto overflow-hidden scroll-mt-6"
-  id="about"
->
-  <div class="flex flex-col lg:max-w-2/3">
-    <span
-      class="inline-block mb-2 text-gray-400 text-base capitalize font-light"
-    >
-      Sobre mí
-    </span>
-    <h2 class="inline-block text-4xl">Valentina Rosero</h2>
-    <h3 class="inline-block text-gray-400 text-base capitalize font-light mb-4">
-      Modelo colombiana y estudiante de Comunicación.
-    </h3>
-    <p class="text-xl font-light text-balance">
-      Colaboro con marcas y proyectos que buscan transmitir autenticidad y
-      estilo. Mi enfoque une la moda, la creatividad y la comunicación visual
-      para crear experiencias que inspiran.
-    </p>
+---
+import { getImageUrl } from "@/lib/sanity/utils";
+import { PortableText } from "astro-portabletext";
+
+interface Props {
+  heading: string;
+  title: string;
+  description: any;
+  details: string[];
+  image: any;
+}
+
+const { heading, title, description, details, image } = Astro.props as Props;
+
+const imageUrl = getImageUrl(image);
+---
+
+<section id="about" class="py-32 bg-background">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      {/* Image */}
+      <div
+        class="relative aspect-3/4 overflow-hidden rounded-sm animate-slide-in-left"
+      >
+        <img
+          src={imageUrl}
+          alt="About image of Valentina Rosero"
+          class="w-full h-full object-cover image-hover-scale"
+        />
+        <div
+          class="absolute inset-0 bg-linear-to-t from-background/30 to-transparent"
+        >
+        </div>
+      </div>
+
+      {/* Content */}
+      <div class="lg:py-12 animate-slide-in-right">
+        <span class="text-xs uppercase tracking-[0.3em] text-accent">
+          {heading}
+        </span>
+
+        <h2
+          class="mt-4 heading-display text-5xl md:text-6xl lg:text-7xl text-foreground"
+        >
+          {
+            title.split(" ").map((word, index, arr) => (
+              <>
+                {index < arr.length - 1 ? (
+                  <>
+                    {word} <br />
+                  </>
+                ) : (
+                  <span class="text-accent">{word}</span>
+                )}
+              </>
+            ))
+          }
+        </h2>
+
+        {
+          description && (
+            <div class="mt-8 text-lg text-muted-foreground leading-relaxed text-elegant *:mb-2">
+              <PortableText value={description as any} />
+            </div>
+          )
+        }
+
+        <div class="mt-12 flex flex-col lg:flex-row flex-wrap gap-8">
+          {
+            details.map((detail, index) => (
+              <div>
+                <span class="heading-display text-4xl text-foreground">
+                  {detail.split("\n")[0]}
+                </span>
+                <p class="mt-1 text-sm text-muted-foreground uppercase tracking-wider">
+                  {detail.split("\n").slice(1).join("\n")}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </section>
