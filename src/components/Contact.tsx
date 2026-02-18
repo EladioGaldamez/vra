@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Toaster, toast } from "sonner";
+import trackEvent from "@/lib/analytics";
 
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,6 +30,10 @@ const ContactSection = () => {
       ).toString(),
     })
       .then(() => {
+        trackEvent("contact_form_submitted", {
+          event_category: "contact",
+          event_label: "Contact form submitted",
+        });
         toast.success("¡Mensaje enviado!", {
           description: "Te responderé lo antes posible.",
         });
@@ -71,6 +76,10 @@ const ContactSection = () => {
                 rel="noopener noreferrer"
                 className="p-3 border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-300"
                 aria-label="Instagram"
+                onClick={() => trackEvent("instagram_clicked", {
+                  event_category: "contact",
+                  event_label: "Instagram clicked",
+                })}
               >
                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                   <use href="/icons-sprite.svg#instagram"></use>
@@ -80,6 +89,10 @@ const ContactSection = () => {
                 href="mailto:valentinaroseroa@gmail.com"
                 className="p-3 border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-300"
                 aria-label="Email"
+                onClick={() => trackEvent("email_clicked", {
+                  event_category: "contact",
+                  event_label: "Email clicked",
+                })}
               >
                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                   <use href="/icons-sprite.svg#mail"></use>

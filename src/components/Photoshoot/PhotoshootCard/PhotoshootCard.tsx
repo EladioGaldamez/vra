@@ -1,15 +1,23 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Photoshoot } from "../types";
+import trackEvent from "@/lib/analytics";
 
 type Props = {
   photoshoot: Photoshoot;
   setSelectedPhotoshoot: Dispatch<SetStateAction<Photoshoot | null>>;
 };
 const PhotoshootCard = ({ photoshoot, setSelectedPhotoshoot }: Props) => {
+  const handleClick = () => {
+    setSelectedPhotoshoot(photoshoot);
+    trackEvent("photoshoot_card_clicked", {
+      event_category: "photoshoot",
+      event_label: photoshoot.title,
+    });
+  };
   return (
     <div className="animate-slide-down animate-delay-1" key={photoshoot._id}>
       <button
-        onClick={() => setSelectedPhotoshoot(photoshoot)}
+        onClick={handleClick}
         className="group relative w-full aspect-3/4 overflow-hidden rounded-sm cursor-pointer text-left"
       >
         {/* Image */}

@@ -72,6 +72,8 @@ const links = [
 </header>
 
 <script>
+  import trackEvent from "@/lib/analytics";
+
   document.addEventListener("DOMContentLoaded", function () {
     function checkScrollPosition() {
       if (window.scrollY > 100) {
@@ -88,11 +90,17 @@ const links = [
     document.addEventListener("scroll", checkScrollPosition);
     checkScrollPosition();
 
-    document.querySelectorAll("header[data-main-header] a").forEach((link) => {
-      link.addEventListener("click", () => {
-        document.body.classList.remove("menu-open");
+    document
+      .querySelectorAll<HTMLAnchorElement>("header[data-main-header] a")
+      .forEach((link) => {
+        link.addEventListener("click", () => {
+          trackEvent("header_link_clicked", {
+            event_category: "navigation",
+            event_label: link.textContent || "",
+          });
+          document.body.classList.remove("menu-open");
+        });
       });
-    });
 
     document
       .getElementById("nav-toggle")

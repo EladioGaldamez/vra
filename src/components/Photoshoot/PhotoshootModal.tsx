@@ -14,6 +14,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "swiper/css/mousewheel";
+import trackEvent from "@/lib/analytics";
 
 interface PhotoshootModalProps {
   photoshoot: Photoshoot | null;
@@ -36,6 +37,14 @@ export const PhotoshootModal = ({
   // Refs
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+
+  const handleClose = () => {
+    onClose();
+    trackEvent("photoshoot_modal_closed", {
+      event_category: "photoshoot",
+      event_label: photoshoot?.title || "",
+    });
+  };
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -71,11 +80,11 @@ export const PhotoshootModal = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm"
-          onClick={onClose}
+          onClick={handleClose}
         >
           {/* Close Button */}
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute top-6 right-6 z-50 p-3 text-foreground/60 hover:text-foreground transition-colors"
             aria-label="Close modal"
           >
@@ -120,6 +129,13 @@ export const PhotoshootModal = ({
                   onRealIndexChange={(swiper) =>
                     setCurrentIndex(swiper.realIndex)
                   }
+                  onSlideChange={(swiper) => {
+                    trackEvent("photoshoot_modal_image_changed", {
+                      event_category: "photoshoot",
+                      event_label: photoshoot?.title || "",
+                      value: swiper.realIndex,
+                    });
+                  }}
                   thumbs={{ swiper: thumbsSwiper ?? undefined }}
                   className="h-[70vh]"
                 >
@@ -195,11 +211,10 @@ export const PhotoshootModal = ({
                 {photoshoot.images.map((image, index) => (
                   <SwiperSlide key={index}>
                     <button
-                      className={`relative w-16 h-20 md:w-20 md:h-24 overflow-hidden rounded-sm transition-all duration-300 ${
-                        index === currentIndex
+                      className={`relative w-16 h-20 md:w-20 md:h-24 overflow-hidden rounded-sm transition-all duration-300 ${index === currentIndex
                           ? "ring-2 ring-accent opacity-100"
                           : "opacity-40 hover:opacity-70"
-                      }`}
+                        }`}
                       onClick={() => swiper?.slideToLoop(index)}
                     >
                       <img
