@@ -23,7 +23,6 @@ export const photoshootType = defineType({
       options: {
         layout: "grid",
       },
-      validation: (Rule) => Rule.max(10),
       of: [
         defineArrayMember({
           name: "image",
