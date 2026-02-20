@@ -266,7 +266,7 @@
 
   @keyframes slide-in-left {
     from {
-      opacity: 0;
+      opacity: 0.01;
       transform: translateX(-50px);
     }
     to {
@@ -277,7 +277,7 @@
 
   @keyframes slide-in-right {
     from {
-      opacity: 0;
+      opacity: 0.01;
       transform: translateX(50px);
     }
     to {
@@ -295,7 +295,7 @@
   }
 
   .scroll-animate {
-    opacity: 0;
+    opacity: 0.01;
   }
 
   .scroll-animate.in-view {
