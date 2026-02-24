@@ -6,8 +6,7 @@ import { structure } from "./studio/structure";
 import { esESLocale } from "@sanity/locale-es-es";
 import { dashboardTool } from "@sanity/dashboard";
 import { netlifyWidget } from "sanity-plugin-dashboard-widget-netlify";
-// import {media} from 'sanity-plugin-media'
-
+import { media } from 'sanity-plugin-media'
 
 export default defineConfig({
   name: "vra-studio",
@@ -43,9 +42,9 @@ export default defineConfig({
 
     structureTool({ structure: structure }),
 
-    // media(),
+    media(),
 
-  ],
+  ].filter(Boolean),
   schema: {
     types: schemaTypes,
   },

@@ -19,12 +19,20 @@ const imageUrl = getImageUrl(image);
   class="relative min-h-screen flex items-center justify-center overflow-hidden"
 >
   <div class="absolute inset-0">
-    <img
-      src={imageUrl}
-      alt="Background image of Valentina Rosero"
-      sizes={`(max-width: 1080px) 1080px, 1920px`}
-      class="mask-hero-image w-full h-full object-cover object-top"
-    />
+    {imageUrl ? (
+      <img
+        src={imageUrl}
+        alt="Background image of Valentina Rosero"
+        width={1920}
+        height={1080}
+        fetchpriority="high"
+        loading="eager"
+        sizes="(max-width: 1080px) 1080px, 1920px"
+        class="mask-hero-image w-full h-full object-cover object-top"
+      />
+    ) : (
+      <div class="w-full h-full bg-secondary" aria-hidden="true" />
+    )}
     <div class="absolute inset-0 bg-background/40"></div>
   </div>
 
