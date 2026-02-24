@@ -1,5 +1,5 @@
 ---
-import { getImageUrl } from "@/lib/sanity/utils";
+import { getImageSrcSet, getImageUrl } from "@/lib/sanity/utils";
 
 interface Props {
   title: string;
@@ -13,26 +13,30 @@ const { title, description, image, buttonText, buttonLink } =
   Astro.props as Props;
 
 const imageUrl = getImageUrl(image);
+const { srcSet, sizes } = getImageSrcSet(image);
 ---
 
 <section
   class="relative min-h-screen flex items-center justify-center overflow-hidden"
 >
   <div class="absolute inset-0">
-    {imageUrl ? (
-      <img
-        src={imageUrl}
-        alt="Background image of Valentina Rosero"
-        width={1920}
-        height={1080}
-        fetchpriority="high"
-        loading="eager"
-        sizes="(max-width: 1080px) 1080px, 1920px"
-        class="mask-hero-image w-full h-full object-cover object-top"
-      />
-    ) : (
-      <div class="w-full h-full bg-secondary" aria-hidden="true" />
-    )}
+    {
+      imageUrl ? (
+        <img
+          src={imageUrl}
+          alt="Background image of Valentina Rosero"
+          width={1920}
+          height={1080}
+          fetchpriority="high"
+          loading="eager"
+          srcset={srcSet}
+          sizes={sizes}
+          class="mask-hero-image w-full h-full object-cover object-top"
+        />
+      ) : (
+        <div class="w-full h-full bg-secondary" aria-hidden="true" />
+      )
+    }
     <div class="absolute inset-0 bg-background/40"></div>
   </div>
 

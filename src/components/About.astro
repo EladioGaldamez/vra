@@ -1,5 +1,5 @@
 ---
-import { getImageUrl } from "@/lib/sanity/utils";
+import { getImageUrl, getImageSrcSet } from "@/lib/sanity/utils";
 import { PortableText } from "astro-portabletext";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 const { heading, title, description, details, image } = Astro.props as Props;
 
 const imageUrl = getImageUrl(image);
+const { srcSet, sizes } = getImageSrcSet(image);
 ---
 
 <section id="about" class="py-32 bg-background">
@@ -24,6 +25,8 @@ const imageUrl = getImageUrl(image);
       >
         <img
           src={imageUrl}
+          srcset={srcSet}
+          sizes={sizes}
           alt="About image of Valentina Rosero"
           class="w-full h-full object-cover image-hover-scale"
         />

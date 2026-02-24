@@ -25,6 +25,7 @@ const PhotoshootCard = ({ photoshoot, setSelectedPhotoshoot }: Props) => {
           src={`${photoshoot.images[0].url}?w=720&fit=crop&auto=format&q=80`}
           alt={photoshoot.images[0].alt}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          loading="lazy"
         />
 
         {/* Overlay */}
