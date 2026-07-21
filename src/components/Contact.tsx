@@ -22,12 +22,7 @@ const ContactSection = () => {
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(
-        Array.from(formData.entries()).map(([key, value]) => [
-          key,
-          String(value),
-        ])
-      ).toString(),
+      body: new URLSearchParams(formData).toString()
     })
       .then(() => {
         trackEvent("contact_form_submitted", {
@@ -103,8 +98,9 @@ const ContactSection = () => {
 
           {/* Right Column - Form */}
           <div className="animate-slide-in-right">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" netlify-honeypot="bot-field" data-netlify="true">
               <input type="hidden" name="form-name" value="contact" />
+              <label className="hidden">Don’t fill this out if you’re human: <input name="bot-field" type="text" /></label>
               <div className="space-y-2">
                 <label
                   htmlFor="name"
