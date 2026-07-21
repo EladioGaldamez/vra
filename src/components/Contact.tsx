@@ -98,7 +98,7 @@ const ContactSection = () => {
 
           {/* Right Column - Form */}
           <div className="animate-slide-in-right">
-            <form onSubmit={handleSubmit} className="space-y-6" netlify-honeypot="bot-field" data-netlify="true" data-netlify-recaptcha="true">
+            <form onSubmit={handleSubmit} className="space-y-6" netlify-honeypot="bot-field" data-netlify="true">
               <input type="hidden" name="form-name" value="contact" />
               <label className="hidden">Don’t fill this out if you’re human: <input name="bot-field" type="text" /></label>
               <div className="space-y-2">
@@ -150,8 +150,6 @@ const ContactSection = () => {
                   className="bg-secondary/50 border-border/50 focus:border-accent resize-none"
                 />
               </div>
-
-              <div data-netlify-recaptcha="true"></div>
 
               <Button
                 type="submit"
