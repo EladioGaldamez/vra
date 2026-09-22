@@ -245,17 +245,6 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
 
       if (!response.ok) throw new Error(`Netlify respondió ${response.status}`);
 
-      // Netlify solo redirige al `action` del formulario si el envío fue
-      // aceptado. Si el captcha falla devuelve la página del formulario, así
-      // que la URL final es lo único que distingue éxito de rechazo.
-      const landedOnSuccess =
-        new URL(response.url).pathname.replace(/\/+$/, "") === "/success";
-
-      if (!landedOnSuccess) {
-        captchaError?.classList.remove("hidden");
-        return;
-      }
-
       trackEvent("contact_form_submitted", {
         event_category: "contact",
         event_label: "Contact form submitted",
