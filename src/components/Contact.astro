@@ -1,0 +1,233 @@
+---
+const inputClass =
+  "flex h-12 w-full rounded-md border border-border/50 bg-secondary/50 px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm";
+
+const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
+---
+
+<section id="contact" class="py-32 bg-background">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+      {/* Left Column */}
+      <div class="animate-slide-in-left">
+        <span class="text-xs uppercase tracking-[0.3em] text-accent">
+          Contacto
+        </span>
+
+        <h2
+          class="mt-4 heading-display text-5xl md:text-6xl lg:text-7xl text-foreground"
+        >
+          Contáctame
+        </h2>
+
+        <p class="mt-8 text-lg text-muted-foreground leading-relaxed max-w-md">
+          ¿Tienes un proyecto en mente? Me encantaría saber más sobre él y
+          explorar cómo podemos colaborar juntos.
+        </p>
+
+        <div class="mt-12 flex items-center gap-6">
+          <a
+            href="https://www.instagram.com/valentinaroseroa"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-3 border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-300"
+            aria-label="Instagram"
+            data-track="instagram_clicked"
+            data-track-label="Instagram clicked"
+          >
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+              <use href="/icons-sprite.svg#instagram"></use>
+            </svg>
+          </a>
+          <a
+            href="mailto:valentinaroseroa@gmail.com"
+            class="p-3 border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-300"
+            aria-label="Email"
+            data-track="email_clicked"
+            data-track-label="Email clicked"
+          >
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+              <use href="/icons-sprite.svg#mail"></use>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {/* Right Column - Form */}
+      <div class="animate-slide-in-right">
+        {
+          /* Se muestra al volver de Netlify Forms con ?success=true */
+        }
+        <div
+          class="hidden flex-col items-start gap-4 rounded-md border border-accent/40 bg-secondary/50 p-8"
+          role="status"
+          data-contact-success
+        >
+          <span class="text-xs uppercase tracking-[0.3em] text-accent">
+            Mensaje enviado
+          </span>
+          <p class="text-2xl text-foreground">¡Gracias por escribirme!</p>
+          <p class="text-muted-foreground leading-relaxed">
+            He recibido tu mensaje y te responderé lo antes posible.
+          </p>
+          <button
+            type="button"
+            class="text-sm uppercase tracking-widest text-muted-foreground underline underline-offset-4 transition-colors duration-300 hover:text-foreground"
+            data-contact-reset
+          >
+            Enviar otro mensaje
+          </button>
+        </div>
+
+        <form
+          name="contact"
+          method="POST"
+          action="/success"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="space-y-6"
+          data-contact-form
+        >
+          <input type="hidden" name="form-name" value="contact" />
+
+          {
+            /* Honeypot: invisible para personas, Netlify descarta el envío si se rellena */
+          }
+          <p class="hidden" aria-hidden="true">
+            <label>
+              No rellenes este campo si eres humano:
+              <input type="text" name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <div class="space-y-2">
+            <label for="name" class={labelClass}>Nombre</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              placeholder="Tu nombre"
+              class={inputClass}
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="email" class={labelClass}>Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder="tu@email.com"
+              class={inputClass}
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="message" class={labelClass}>Mensaje</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              placeholder="Cuéntame sobre tu proyecto..."
+              rows="5"
+              class="flex min-h-20 w-full resize-none rounded-md border border-border/50 bg-secondary/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-md h-12 px-4 py-2 text-sm font-medium uppercase tracking-widest ring-offset-background bg-foreground text-background transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          >
+            Enviar Mensaje
+          </button>
+
+          <p
+            class="hidden text-sm text-red-400"
+            role="alert"
+            data-contact-error
+          >
+            No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme a
+            <a
+              href="mailto:valentinaroseroa@gmail.com"
+              class="underline underline-offset-4">valentinaroseroa@gmail.com</a
+            >.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import trackEvent from "@/lib/analytics";
+
+  document.querySelectorAll<HTMLAnchorElement>("#contact a[data-track]").forEach((link) => {
+    link.addEventListener("click", () => {
+      trackEvent(link.dataset.track!, {
+        event_category: "contact",
+        event_label: link.dataset.trackLabel || "",
+      });
+    });
+  });
+
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const successPanel = document.querySelector<HTMLElement>("[data-contact-success]");
+  const errorMessage = form?.querySelector<HTMLElement>("[data-contact-error]");
+  const submitButton = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+
+  function toggleSuccess(visible: boolean) {
+    successPanel?.classList.toggle("hidden", !visible);
+    successPanel?.classList.toggle("flex", visible);
+    form?.classList.toggle("hidden", visible);
+  }
+
+  document
+    .querySelector<HTMLButtonElement>("[data-contact-reset]")
+    ?.addEventListener("click", () => toggleSuccess(false));
+
+  // Se envía por AJAX para que la página no recargue ni salte de posición.
+  // Sin JS, el submit nativo sigue funcionando y Netlify redirige a /success.
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    errorMessage?.classList.add("hidden");
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Enviando...";
+    }
+
+    try {
+      const response = await fetch(window.location.pathname, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(
+          Array.from(new FormData(form).entries()).map(([key, value]) => [
+            key,
+            String(value),
+          ])
+        ).toString(),
+      });
+
+      if (!response.ok) throw new Error(`Netlify respondió ${response.status}`);
+
+      trackEvent("contact_form_submitted", {
+        event_category: "contact",
+        event_label: "Contact form submitted",
+      });
+
+      form.reset();
+      toggleSuccess(true);
+    } catch (error) {
+      console.error(error);
+      errorMessage?.classList.remove("hidden");
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Enviar Mensaje";
+      }
+    }
+  });
+</script>

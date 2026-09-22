@@ -5,11 +5,10 @@ import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import sanity from "@sanity/astro";
 
-import netlify from "@astrojs/netlify";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.tinarosero.com",
+  output: "static",
 
   vite: {
     plugins: [tailwindcss()],
@@ -30,7 +29,7 @@ export default defineConfig({
     useCdn: false,
     // Access the Studio on your.url/admin
     studioBasePath: '/vra-studio',
+    // El router por hash permite prerenderizar el Studio en un sitio estático
+    studioRouterHistory: 'hash',
   })],
-
-  adapter: netlify(),
 });
