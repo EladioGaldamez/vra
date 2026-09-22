@@ -14,34 +14,40 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    e.preventDefault();
-
     const myForm = e.target as HTMLFormElement;
     const formData = new FormData(myForm);
 
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData).toString()
-    })
-      .then(() => {
-        trackEvent("contact_form_submitted", {
-          event_category: "contact",
-          event_label: "Contact form submitted",
-        });
-        toast.success("¡Mensaje enviado!", {
-          description: "Te responderé lo antes posible.",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("¡Error al enviar el mensaje!", {
-          description: "Por favor, intenta nuevamente o contacta por otras vías.",
-        });
+    try {
+      const response = await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(
+          Array.from(formData.entries()).map(([key, value]) => [
+            key,
+            String(value),
+          ])
+        ).toString(),
       });
 
-    setIsSubmitting(false);
-    (e.target as HTMLFormElement).reset();
+      if (!response.ok) throw new Error(`Netlify respondió ${response.status}`);
+
+      trackEvent("contact_form_submitted", {
+        event_category: "contact",
+        event_label: "Contact form submitted",
+      });
+      toast.success("¡Mensaje enviado!", {
+        description: "Te responderé lo antes posible.",
+      });
+      myForm.reset();
+    } catch (error) {
+      console.error(error);
+      toast.error("¡Error al enviar el mensaje!", {
+        description:
+          "Por favor, intenta nuevamente o contacta por otras vías.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -100,7 +106,20 @@ const ContactSection = () => {
           <div className="animate-slide-in-right">
             <form onSubmit={handleSubmit} className="space-y-6" netlify-honeypot="bot-field" data-netlify="true">
               <input type="hidden" name="form-name" value="contact" />
-              <label className="hidden">Don’t fill this out if you’re human: <input name="bot-field" type="text" /></label>
+
+              {/* Honeypot: invisible para personas, Netlify descarta el envío si se rellena */}
+              <p className="hidden" aria-hidden="true">
+                <label>
+                  No rellenes este campo si eres humano:{" "}
+                  <input
+                    type="text"
+                    name="bot-field"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
+              </p>
+
               <div className="space-y-2">
                 <label
                   htmlFor="name"
