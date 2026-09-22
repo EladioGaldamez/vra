@@ -146,6 +146,14 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
           <p
             class="hidden text-sm text-red-400"
             role="alert"
+            data-contact-captcha-error
+          >
+            Confirma que no eres un robot para poder enviar el mensaje.
+          </p>
+
+          <p
+            class="hidden text-sm text-red-400"
+            role="alert"
             data-contact-error
           >
             No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme a
@@ -172,10 +180,25 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
     });
   });
 
+  declare global {
+    interface Window {
+      grecaptcha?: { reset: (widgetId?: number) => void };
+    }
+  }
+
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
   const successPanel = document.querySelector<HTMLElement>("[data-contact-success]");
   const errorMessage = form?.querySelector<HTMLElement>("[data-contact-error]");
+  const captchaError = form?.querySelector<HTMLElement>("[data-contact-captcha-error]");
   const submitButton = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+
+  // Netlify inyecta este campo con el widget de reCAPTCHA al hacer el deploy,
+  // por lo que no existe al ejecutar el sitio en local.
+  function getCaptchaToken() {
+    return form?.querySelector<HTMLTextAreaElement>(
+      "[name='g-recaptcha-response']"
+    );
+  }
 
   function toggleSuccess(visible: boolean) {
     successPanel?.classList.toggle("hidden", !visible);
@@ -193,6 +216,15 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
     event.preventDefault();
 
     errorMessage?.classList.add("hidden");
+    captchaError?.classList.add("hidden");
+
+    const captchaField = getCaptchaToken();
+
+    // Evita el envío si el captcha está presente pero sin resolver
+    if (captchaField && !captchaField.value) {
+      captchaError?.classList.remove("hidden");
+      return;
+    }
 
     if (submitButton) {
       submitButton.disabled = true;
@@ -213,6 +245,17 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
 
       if (!response.ok) throw new Error(`Netlify respondió ${response.status}`);
 
+      // Netlify solo redirige al `action` del formulario si el envío fue
+      // aceptado. Si el captcha falla devuelve la página del formulario, así
+      // que la URL final es lo único que distingue éxito de rechazo.
+      const landedOnSuccess =
+        new URL(response.url).pathname.replace(/\/+$/, "") === "/success";
+
+      if (!landedOnSuccess) {
+        captchaError?.classList.remove("hidden");
+        return;
+      }
+
       trackEvent("contact_form_submitted", {
         event_category: "contact",
         event_label: "Contact form submitted",
@@ -224,6 +267,10 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
       console.error(error);
       errorMessage?.classList.remove("hidden");
     } finally {
+      // El token de reCAPTCHA es de un solo uso: sin resetear, el siguiente
+      // envío sería rechazado por Netlify.
+      window.grecaptcha?.reset();
+
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.textContent = "Enviar Mensaje";
