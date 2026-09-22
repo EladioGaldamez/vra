@@ -85,14 +85,12 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
           action="/success"
           data-netlify="true"
           netlify-honeypot="bot-field"
+          data-netlify-recaptcha="true"
           class="space-y-6"
           data-contact-form
         >
           <input type="hidden" name="form-name" value="contact" />
 
-          {
-            /* Honeypot: invisible para personas, Netlify descarta el envío si se rellena */
-          }
           <p class="hidden" aria-hidden="true">
             <label>
               No rellenes este campo si eres humano:
@@ -135,6 +133,8 @@ const labelClass = "text-sm uppercase tracking-wider text-muted-foreground";
               class="flex min-h-20 w-full resize-none rounded-md border border-border/50 bg-secondary/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             ></textarea>
           </div>
+
+          <div data-netlify-recaptcha="true"></div>
 
           <button
             type="submit"
